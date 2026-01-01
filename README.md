@@ -5,7 +5,7 @@
     </td>
     <td style="border: none; padding: 0;">
       <h1>AI on AWS</h1>
-      Repo for the AI on AWS Playlist - link TBD.
+      Repo for the AI on AWS <a href="https://www.youtube.com/playlist?list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj">Playlist</a>.
     </td>
   </tr>
 </table>
@@ -23,3 +23,5 @@ A comprehensive guide to implementing artificial intelligence solutions on Amazo
 
 ### Topics
 - **[Purpose-Built AI Services](0_Purpose_Built_AI_Services/)** - Learn about AWS's purpose-built AI services including Transcribe, Polly, Translate, Comprehend, Rekognition, Textract, and Lex.
+- **[Insurance Claim Submission Demo App](1_Purpose_Built_AI_Services_Demo_Apps/Insurance_Claim_Submission/)** - Full-stack application demonstrating AWS AI services for processing insurance claims with multi-language support, document processing, and visual analysis.
+- **[Multilingual Chat Demo App](1_Purpose_Built_AI_Services_Demo_Apps/Multilingual_Chat/)** - Real-time WebSocket-based chat application with automatic translation and sentiment analysis, allowing three users to chat in English, Spanish, and French with messages translated in real-time.
