@@ -18,10 +18,14 @@ A comprehensive guide to implementing artificial intelligence solutions on Amazo
 - [Topics](#topics)
 
 
-## Companion Videos
-- Intro - TBD
+## Companion Videos (TBD)
+- Playlist Intro
+- Purpose-Built AI Services
+- Multilingual Chat App Demo
+- Insurance Claim Submission App Demo
 
-### Topics
+## Topics
 - **[Purpose-Built AI Services](0_Purpose_Built_AI_Services/)** - Learn about AWS's purpose-built AI services including Transcribe, Polly, Translate, Comprehend, Rekognition, Textract, and Lex.
-- **[Insurance Claim Submission Demo App](1_Purpose_Built_AI_Services_Demo_Apps/Insurance_Claim_Submission/)** - Full-stack application demonstrating AWS AI services for processing insurance claims with multi-language support, document processing, and visual analysis.
 - **[Multilingual Chat Demo App](1_Purpose_Built_AI_Services_Demo_Apps/Multilingual_Chat/)** - Real-time WebSocket-based chat application with automatic translation and sentiment analysis, allowing three users to chat in English, Spanish, and French with messages translated in real-time.
+
+- **[Insurance Claim Submission Demo App](1_Purpose_Built_AI_Services_Demo_Apps/Insurance_Claim_Submission/)** - Full-stack application demonstrating AWS AI services for processing insurance claims with multi-language support, document processing, and visual analysis.
