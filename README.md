@@ -19,9 +19,9 @@ A comprehensive guide to implementing artificial intelligence solutions on Amazo
 
 
 ## Companion Videos (TBD)
-- Playlist Intro
-- Purpose-Built AI Services
-- Multilingual Chat App Demo
+-[Playlist Intro](https://youtu.be/17NCTlz-hbU)
+- [Purpose-Built AI Services](https://youtu.be/3NMeuQTeyYE)
+- [Multilingual Chat App Demo](https://youtu.be/j3q6RcPKyz0)
 - Insurance Claim Submission App Demo
 
 ## Topics

@@ -204,8 +204,3 @@ For each message sent:
 - Color coding is applied to translated messages based on sentiment
 - The sender always sees their own messages in blue
 - WebSocket connection status is shown in each chat pane
-
-## License
-
-MIT
-
