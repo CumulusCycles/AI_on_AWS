@@ -23,7 +23,7 @@ A comprehensive guide to implementing artificial intelligence solutions on Amazo
 - [Purpose-Built AI Services](https://youtu.be/3NMeuQTeyYE)
 - [Multilingual Chat App Demo](https://youtu.be/j3q6RcPKyz0)
 - [Insurance Claim Submission App Demo](https://youtu.be/ZZufmT_KIhQ)
-- [Deploy aFull-stack App with AI Services Integration to AWS](https://youtu.be/jJIV6rWuVbo)
+- [Deploy a Full-stack App with AI Services Integration to AWS](https://youtu.be/jJIV6rWuVbo)
 
 ## Topics
 - **[Purpose-Built AI Services](0_Purpose_Built_AI_Services/)** - Learn about AWS's purpose-built AI services including Transcribe, Polly, Translate, Comprehend, Rekognition, Textract, and Lex.
