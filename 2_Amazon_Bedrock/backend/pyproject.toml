@@ -1,0 +1,14 @@
+[project]
+name = "bedrock-chat-backend"
+version = "0.1.0"
+description = "FastAPI backend for AWS Bedrock chat application"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "boto3==1.29.7",
+    "botocore==1.32.7",
+    "python-dotenv==1.0.0",
+]
