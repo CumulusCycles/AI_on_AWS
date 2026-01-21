@@ -1,0 +1,10 @@
+[project]
+name = "bedrock-chat-frontend"
+version = "0.1.0"
+description = "Streamlit frontend for AWS Bedrock chat application"
+requires-python = ">=3.12"
+dependencies = [
+    "streamlit==1.29.0",
+    "requests==2.31.0",
+    "python-dotenv==1.0.0",
+]
