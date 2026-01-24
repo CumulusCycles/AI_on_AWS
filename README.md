@@ -19,11 +19,13 @@ A comprehensive guide to implementing artificial intelligence solutions on Amazo
 
 
 ## Companion Videos
-- [Playlist Intro](https://youtu.be/17NCTlz-hbU)
-- [Purpose-Built AI Services](https://youtu.be/3NMeuQTeyYE)
-- [Multilingual Chat App Demo](https://youtu.be/j3q6RcPKyz0)
-- [Insurance Claim Submission App Demo](https://youtu.be/ZZufmT_KIhQ)
-- [Deploy a Full-stack App with AI Services Integration to AWS](https://youtu.be/jJIV6rWuVbo)
+- [Playlist Intro](https://www.youtube.com/watch?v=17NCTlz-hbU&list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj&index=2)
+- [Purpose-Built AI Services](https://www.youtube.com/watch?v=3NMeuQTeyYE&list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj&index=3)
+- [Multilingual Chat App Demo](https://www.youtube.com/watch?v=j3q6RcPKyz0&list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj&index=4)
+- [Insurance Claim Submission App Demo](https://www.youtube.com/watch?v=ZZufmT_KIhQ&list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj&index=5)
+- [Deploy a Full-stack App with AI Services Integration to AWS using CDK](https://www.youtube.com/watch?v=jJIV6rWuVbo&list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj&index=6)
+- [An Intro to Amazon Bedrock (with Integration in a FastAPI / Streamlit App)](https://www.youtube.com/watch?v=XZ2-0IHWlD0&list=PLRBkbp6t5gM2S0wHeDB8jHiwjYx3DhyYj&index=7)
+- Build a Full-Stack Multimodal AI Chat App with Amazon Bedrock using FastAPI, React & TypeScript From Scratch (video TBD)
 
 ## Topics
 - **[Purpose-Built AI Services](0_Purpose_Built_AI_Services/)** - Learn about AWS's purpose-built AI services including Transcribe, Polly, Translate, Comprehend, Rekognition, Textract, and Lex.

@@ -1,0 +1,14 @@
+{
+  "us.anthropic.claude-sonnet-4-20250514-v1:0": {
+    "temperature_min": 0.0,
+    "temperature_max": 1.0,
+    "max_tokens_min": 100,
+    "max_tokens_max": 8192
+  },
+  "default": {
+    "temperature_min": 0.0,
+    "temperature_max": 1.0,
+    "max_tokens_min": 100,
+    "max_tokens_max": 8192
+  }
+}
