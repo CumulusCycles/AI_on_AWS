@@ -1,0 +1,14 @@
+[project]
+name = "bedrock-app-integration-backend"
+version = "0.1.0"
+description = "FastAPI backend for AWS Bedrock app integration"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "boto3>=1.35.25",  # 1.35.25+ required for Bedrock Converse API (converse method)
+    "python-dotenv==1.0.0",
+    "python-multipart==0.0.6",
+]

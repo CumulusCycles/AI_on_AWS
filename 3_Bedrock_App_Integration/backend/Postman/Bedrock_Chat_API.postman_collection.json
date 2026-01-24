@@ -1,0 +1,520 @@
+{
+	"info": {
+		"_postman_id": "bedrock-app-integration-api-collection",
+		"name": "Bedrock App Integration API",
+		"description": "Complete API collection for AWS Bedrock App Integration with multimodal (text + image) support. Images required for initial submission (exactly 3); optional for follow-ups (text-only allowed).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health & Config",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						},
+						"description": "Health check endpoint to verify API is running"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/config",
+							"host": ["{{base_url}}"],
+							"path": ["config"]
+						},
+						"description": "Get configuration and model limits for frontend"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Initial Assessment (Text + 3 Images Required)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.conversation_id) {",
+									"        pm.environment.set('conversation_id', response.conversation_id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Please analyze this image and provide a detailed description.",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": [],
+									"description": "Required: exactly 3 images for initial damage assessment (wide-angle, straight-on, closeup). JPEG, PNG, GIF, WebP. Max 3.75 MB each."
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/chat",
+							"host": ["{{base_url}}"],
+							"path": ["chat"]
+						},
+						"description": "Initial submission: both message and exactly 3 images are required. Use for first damage assessment (no conversation_id)."
+					},
+					"response": []
+				},
+				{
+					"name": "Chat with Conversation Context (Follow-up)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Response has message', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('message');",
+									"    pm.expect(response).to.have.property('model_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}",
+									"type": "text"
+								},
+								{
+									"key": "conversation_id",
+									"value": "{{conversation_id}}",
+									"type": "text",
+									"description": "Use conversation_id from previous chat or create conversation first"
+								},
+								{
+									"key": "message",
+									"value": "What did I ask you about earlier?",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": [],
+									"description": "Optional for follow-ups. Leave empty for text-only. Or upload 1+ images (JPEG, PNG, GIF, WebP, max 3.75 MB) for additional context."
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/chat",
+							"host": ["{{base_url}}"],
+							"path": ["chat"]
+						},
+						"description": "Follow-up: continue a conversation using conversation_id. Message required; files optional (text-only allowed). Omit or leave files empty to send without images."
+					},
+					"response": []
+				},
+				{
+					"name": "Chat with Custom Parameters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Generate a creative story",
+									"type": "text"
+								},
+								{
+									"key": "model_id",
+									"value": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+									"type": "text",
+									"description": "Optional: Override default model"
+								},
+								{
+									"key": "temperature",
+									"value": "0.7",
+									"type": "text",
+									"description": "Optional: Override temperature (0.0-1.0)"
+								},
+								{
+									"key": "max_tokens",
+									"value": "2000",
+									"type": "text",
+									"description": "Optional: Override max tokens"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": [],
+									"description": "Required when no conversation_id (initial/stateless). Optional when conversation_id provided. JPEG, PNG, GIF, WebP. Max 3.75 MB."
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/chat",
+							"host": ["{{base_url}}"],
+							"path": ["chat"]
+						},
+						"description": "Send chat with custom model parameters. Without conversation_id: message and files required. With conversation_id: message required; files optional."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conversations",
+			"item": [
+				{
+					"name": "Create Conversation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('conversation_id', response.conversation_id);",
+									"    pm.test('Conversation created', function () {",
+									"        pm.expect(response).to.have.property('conversation_id');",
+									"        pm.expect(response).to.have.property('user_id');",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": \"{{user_id}}\",\n    \"model_id\": \"us.anthropic.claude-sonnet-4-20250514-v1:0\",\n    \"temperature\": 0.2,\n    \"max_tokens\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations",
+							"host": ["{{base_url}}"],
+							"path": ["conversations"]
+						},
+						"description": "Create a new conversation with initial settings"
+					},
+					"response": []
+				},
+				{
+					"name": "List Conversations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/conversations?user_id={{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["conversations"],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "List all conversations for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}?user_id={{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}"],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "Retrieve a conversation by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Conversation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}?user_id={{user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}"],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "Delete a conversation by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Dashboard",
+			"item": [
+				{
+					"name": "Get Analytics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/analytics",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "analytics"]
+						},
+						"description": "Get aggregated analytics for the admin dashboard"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Analytics Timeline",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/analytics/timeline?days=30",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "analytics", "timeline"],
+							"query": [
+								{
+									"key": "days",
+									"value": "30",
+									"description": "Number of days to include in timeline"
+								}
+							]
+						},
+						"description": "Get time-based analytics for the last N days"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Conversations (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/conversations?sort_by=updated_at&order=desc",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "conversations"],
+							"query": [
+								{
+									"key": "sort_by",
+									"value": "updated_at",
+									"description": "Sort by: created_at, updated_at, message_count, total_tokens"
+								},
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Order: asc or desc"
+								}
+							]
+						},
+						"description": "List all conversations across all users (admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversation (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/conversations/{{conversation_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "conversations", "{{conversation_id}}"]
+						},
+						"description": "Get any conversation by ID (admin only, no user filtering)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversation Stats (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/conversations/{{conversation_id}}/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "conversations", "{{conversation_id}}", "stats"]
+						},
+						"description": "Get detailed statistics for a specific conversation (admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete Conversations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    \"conversation-id-1\",\n    \"conversation-id-2\",\n    \"conversation-id-3\"\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/conversations/bulk-delete",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "conversations", "bulk-delete"]
+						},
+						"description": "Delete multiple conversations by ID (admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Model Usage Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/models",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "models"]
+						},
+						"description": "Get model usage statistics showing which models are being used"
+					},
+					"response": []
+				},
+				{
+					"name": "Get System Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/system",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "system"]
+						},
+						"description": "Get system information and overall statistics"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recent Activity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/activity/recent?limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "activity", "recent"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Number of recent conversations to return"
+								}
+							]
+						},
+						"description": "Get recent activity (most recently updated conversations)"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

@@ -33,7 +33,9 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# Python lib directories (not CDK lib/ folders)
+**/venv/lib/
+**/env/lib/
 lib64/
 parts/
 sdist/
@@ -257,6 +259,10 @@ samconfig.toml
 
 # AWS CDK
 cdk.out/
+# CDK compiled TypeScript output (but keep source .ts files)
+**/infrastructure/**/*.js
+!**/infrastructure/jest.config.js
+**/infrastructure/**/*.d.ts
 *.swp
 *.swo
 
