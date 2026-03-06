@@ -1,0 +1,6 @@
+{
+  "app": "npx ts-node --prefer-ts-exts src/app.ts",
+  "watch": {
+    "include": ["src/**"]
+  }
+}
