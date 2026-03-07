@@ -1,0 +1,209 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AI Agent Insure — Claims & Policy API",
+    "description": "Action group API for the AI Agent Insure Bedrock Agent. Provides claim submission, claim status lookup, policy lookup, policy listing, and coverage summaries.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/submitClaim": {
+      "post": {
+        "summary": "Submit a new insurance claim",
+        "description": "Creates a new claim under an existing active policy. Returns a claim ID and confirmation.",
+        "operationId": "submitClaim",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["policy_id", "incident_type", "description"],
+                "properties": {
+                  "policy_id": {
+                    "type": "string",
+                    "description": "The policy ID to file the claim under (e.g. POL-001)"
+                  },
+                  "incident_type": {
+                    "type": "string",
+                    "description": "Category of the AI incident (e.g. model_failure, data_breach, hallucination, autonomous_misjudgment)"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description of the incident"
+                  },
+                  "estimated_loss": {
+                    "type": "string",
+                    "description": "Estimated financial loss in USD (numeric string, e.g. '50000')"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Claim submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "claim_id": { "type": "string" },
+                    "policy_id": { "type": "string" },
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getClaimStatus": {
+      "get": {
+        "summary": "Get the status of an existing claim",
+        "description": "Returns the current status and details of a claim by its claim ID.",
+        "operationId": "getClaimStatus",
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "query",
+            "required": true,
+            "description": "The claim ID to look up (e.g. CLM-ABC123)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Claim details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "claim_id": { "type": "string" },
+                    "policy_id": { "type": "string" },
+                    "status": { "type": "string" },
+                    "incident_type": { "type": "string" },
+                    "estimated_loss": { "type": "number" },
+                    "submitted_at": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lookupPolicy": {
+      "get": {
+        "summary": "Look up a policy by ID",
+        "description": "Returns full policy details including holder, product, coverage limit, deductible, and status.",
+        "operationId": "lookupPolicy",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "query",
+            "required": true,
+            "description": "The policy ID to retrieve (e.g. POL-001)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "policy_id": { "type": "string" },
+                    "holder": { "type": "string" },
+                    "product": { "type": "string" },
+                    "coverage_limit": { "type": "number" },
+                    "deductible": { "type": "number" },
+                    "status": { "type": "string" },
+                    "expiry": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listPolicies": {
+      "get": {
+        "summary": "List all policies, optionally filtered by holder name",
+        "description": "Returns a list of all policies. Optionally filter by partial holder name.",
+        "operationId": "listPolicies",
+        "parameters": [
+          {
+            "name": "holder",
+            "in": "query",
+            "required": false,
+            "description": "Optional partial holder name to filter results",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of policies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "policies": {
+                      "type": "array",
+                      "items": { "type": "object" }
+                    },
+                    "count": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getCoverageSummary": {
+      "get": {
+        "summary": "Get a plain-language coverage summary for a policy",
+        "description": "Returns a human-readable summary of what a policy covers, its limits, deductible, and expiry.",
+        "operationId": "getCoverageSummary",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "query",
+            "required": true,
+            "description": "The policy ID to summarize (e.g. POL-001)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coverage summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "policy_id": { "type": "string" },
+                    "product": { "type": "string" },
+                    "coverage_limit": { "type": "string" },
+                    "deductible": { "type": "string" },
+                    "status": { "type": "string" },
+                    "expiry": { "type": "string" },
+                    "summary": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

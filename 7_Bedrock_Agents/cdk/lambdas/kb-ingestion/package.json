@@ -1,0 +1,8 @@
+{
+  "name": "kb-ingestion",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-bedrock-agent": "^3.700.0"
+  }
+}

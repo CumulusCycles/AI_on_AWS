@@ -27,3 +27,4 @@ A progressive, hands-on guide to building AI applications on AWS — from purpos
 | 4 | [`4_Bedrock_RAG_KB`](./4_Bedrock_RAG_KB/) | AWS infrastructure for a Bedrock RAG Knowledge Base backed by OpenSearch Serverless — Lambda handler and KB corpus documents |
 | 5 | [`5_Bedrock_RAG_KB_App_Integration`](./5_Bedrock_RAG_KB_App_Integration/) | Full-stack RAG chat app (FastAPI + Streamlit) wrapping the module 4 Knowledge Base |
 | 6 | [`6_Bedrock_RAG_KB_S3_Vectors`](./6_Bedrock_RAG_KB_S3_Vectors/) | Combined RAG project (modules 4+5) rebuilt with S3 Vectors instead of OpenSearch Serverless — React frontend on S3, API Gateway, Lambda, Bedrock KB. Demonstrates the cost-effective vector store alternative |
+| 7 | [`7_Bedrock_Agents`](./7_Bedrock_Agents/) | Bedrock Agents: orchestrated AI (Claude) with action groups (Lambda + DynamoDB) and a Knowledge Base (S3 Vectors). Streamlit chat app; infra via Terraform or TypeScript CDK |

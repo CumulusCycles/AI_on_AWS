@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build / CDK
+cdk.out/
+dist/
+*.js
+!bin/*.js
+!lambdas/**/*.js
+
+# Lambda asset node_modules (install before deploy)
+lambdas/kb-ingestion/node_modules/
+lambdas/seed-policies/node_modules/
+
+# IDE / OS
+.idea/
+.DS_Store
+*.log
+
+# Env (if you add one)
+.env
+.env.local
