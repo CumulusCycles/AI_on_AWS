@@ -28,6 +28,8 @@ Streamlit UI  ── boto3 ──►  Bedrock Agent  ──►  Foundation Model
                                   └── Knowledge Base ──► S3 Vectors ──► S3 (docs)
 ```
 
+![Architecture](img/arch.png)
+
 The action group Lambda implements five operations: submitClaim, getClaimStatus, lookupPolicy, listPolicies, getCoverageSummary (claims and policies tables). The KB uses an S3 Vectors index populated from the S3 docs bucket (11 product markdown files). Streamlit calls `bedrock-agent-runtime` directly — no intermediate server.
 
 ---
