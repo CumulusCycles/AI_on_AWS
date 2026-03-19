@@ -46,45 +46,71 @@ Do these steps **in this order**:
 
 17. Lambda → **Create function** (author from scratch). **Name** it (e.g. `rag-kb-chat`).
 18. **Execution role:** choose **Use an existing role** → select **`rag-kb-s3-vectors-lambda-role`**. (If you don't see it, you did not complete step 1.)
-19. **Configuration** → **Environment variables** → **Edit** → **Add**:
+19. **Configuration** → **General configuration** → **Edit** → set:
+    - **Timeout:** 30 seconds (Bedrock calls often exceed the default 3 seconds)
+    - *(Optional)* **Memory:** 512 MB (can reduce latency)
+20. **Configuration** → **Environment variables** → **Edit** → **Add**:
     - **Key:** `KNOWLEDGE_BASE_ID` → **Value:** the Knowledge base ID from step 16
     - **Key:** `FOUNDATION_MODEL_ARN` → **Value:** `arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0` (change `us-east-1` only if your Lambda is in another region)
-20. **Code** → replace the default handler with the contents of **`lambda/lambda.py`** → **Deploy**
+21. **Code** → replace the default handler with the contents of **`lambda/lambda.py`** → **Deploy**
 
 ---
 
 ## Step 6 — Set the Knowledge Base generation model
 
-21. Bedrock → **Knowledge bases** → open your KB → **Edit** → set **Generative AI model** to **Claude 3 Haiku** → **Save**
+22. Bedrock → **Knowledge bases** → open your KB → **Edit** → set **Generative AI model** to **Claude 3 Haiku** → **Save**
 
 ---
 
 ## Step 7 — API Gateway
 
-22. API Gateway → **Create API** → **HTTP API** → add a route **POST /chat** integrated with your Lambda.
-23. Enable CORS:
+23. API Gateway → **Create API** → **HTTP API** → add a route **POST /chat** integrated with your Lambda.
+24. Ensure you have a stage with **Auto-deploy** enabled (required to get an Invoke URL):
+    - In the HTTP API console → **Stages**
+    - Open **`$default`** (it is often created automatically) and enable **Auto-deploy**
+    - If **`$default`** does not exist, create it and enable **Auto-deploy**
+    - *(Alternative)* create a stage like `prod` with **Auto-deploy** (your Invoke URL will include `/prod`)
+25. Enable CORS:
     - In the HTTP API console → **CORS** tab → **Configure CORS**
-    - **Access-Control-Allow-Origin:** `*` (or your S3 bucket's static website URL if known)
-    - **Access-Control-Allow-Methods:** check `POST` (and `OPTIONS` if not already selected)
+    - **Access-Control-Allow-Origin:** use `*` for a demo, or set a specific origin:
+      - local dev: `http://localhost:3000`
+      - S3 website: `http://<your-frontend-bucket>.s3-website-us-east-1.amazonaws.com`
+    - **Access-Control-Allow-Methods:** check `POST` **and** `OPTIONS`
     - **Access-Control-Allow-Headers:** check `Content-Type`
     - Click **Save**
-    - Note the **Invoke URL** (you'll need it for the frontend `.env` file)
+    - Note the **Invoke URL**. Your final endpoint is:
+      - `$default` stage: `<invoke-url>/chat`
+      - `prod` stage: `<invoke-url>/prod/chat`
 
 ---
 
 ## Step 8 — Test the Lambda
 
-24. In the Lambda console → **Test** tab → **Create new event** → paste this **exact** JSON → **Save** → **Test**:
+26. In the Lambda console → **Test** tab → **Create new event** → paste this **exact** JSON → **Save** → **Test**:
     ```json
     {"body": "{\"query\": \"What is AI Agent Insure?\"}"}
     ```
-25. You should get status 200 and a JSON body with `generated_response` and `s3_locations`. If you get 502, the Lambda is not using **`rag-kb-s3-vectors-lambda-role`** — go to Lambda → **Configuration** → **Permissions** → **Edit** → **Use an existing role** → **`rag-kb-s3-vectors-lambda-role`**.
+27. You should get status 200 and a JSON body with `generated_response` and `s3_locations`. If you get 502, the Lambda is not using **`rag-kb-s3-vectors-lambda-role`** — go to Lambda → **Configuration** → **Permissions** → **Edit** → **Use an existing role** → **`rag-kb-s3-vectors-lambda-role`**.
 
 ---
 
 ## Step 9 — S3 static website (optional, for frontend)
 
-26. S3 → create a bucket for the frontend; enable **Static website hosting**; upload the built frontend (see Part 2 and Part 3 in the [README](./README.md)).
+28. Deploy the frontend to S3 (static website):
+    - Ensure `frontend/.env` has:
+      - `VITE_API_URL` set to your API Gateway endpoint **including** `/chat` (see step 25)
+      - `REGION=us-east-1`
+      - `BUCKET=<your-frontend-bucket-name>` (choose a globally-unique S3 bucket name)
+    - From the repo root, run:
+      - `cd 6_Bedrock_RAG_KB_S3_Vectors/frontend`
+      - `npm install`
+      - `./deploy.sh`
+
+    This script builds the app, **creates the bucket if it doesn't exist**, enables S3 static website hosting (SPA-friendly: `index.html` + `error` → `index.html`), makes the bucket publicly readable for the website, and uploads `dist/`.
+
+29. Open the printed website URL (looks like `http://<bucket>.s3-website-us-east-1.amazonaws.com`).
+
+30. If you get a browser CORS error, update your API Gateway HTTP API CORS settings to allow your website origin (or use `*` for a demo).
 
 ---
 
