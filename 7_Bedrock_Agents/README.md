@@ -2,6 +2,8 @@
 
 A complete **Amazon Bedrock Agents** project: AWS infrastructure (Terraform or TypeScript CDK) and a Streamlit chat application that calls the Bedrock Agent directly via boto3.
 
+For a guided walkthrough of the implementation, see [WALKTHROUGH.md](WALKTHROUGH.md).
+
 ---
 
 ## What is a Bedrock Agent?
